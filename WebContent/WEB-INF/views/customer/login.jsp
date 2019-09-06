@@ -15,7 +15,7 @@
 %>
 
 
-<form id = "login" action="<%=application.getContextPath()%>/member.do?">
+<form id = "login" action="<%=application.getContextPath()%>/customer.do?">
 <table border="3px;">
 	<tr>
 		<td>ID</td><td><input type="text" name="id"/></td>
@@ -27,12 +27,12 @@
 		<td>전송</td><td><input type="submit" value="전송"/></td>
 	</tr>
 	<input type="hidden" value="login" name="action"/>
-	<input type="hidden" value="exist_id" name="dest"/>
+	<input type="hidden" value="exist_id" name="page"/>
 </table>
 </form>
 <script>
 	$("#login").submit(function(){
-		 location.assign('<%=request.getContextPath()%>/member.do?action=move&dest=login');
+		 location.assign('<%=request.getContextPath()%>/customer.do?action=move&dest=login');
 		alert("login");
 	});	
 	

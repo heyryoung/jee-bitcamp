@@ -23,12 +23,12 @@
 
 <script>
 	$("#login").click(function(){
-		 location.assign('<%=request.getContextPath()%>/member.do?action=move&dest=login');
+		 location.assign('<%=request.getContextPath()%>/customer.do?page=login');
 		alert("login");
 	});	
 		$("#join_form").click(function(){
 		alert("하이");
-		 location.assign('<%=request.getContextPath()%>/member.do?action=move&dest=join');
+		 location.assign('<%=request.getContextPath()%>/customer.do?page=join');
 	});
 	
 </script>

@@ -2,19 +2,24 @@ package com.bank.web.controllers;
 
 import java.io.IOException;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.bank.web.command.Sender;
+import com.bank.web.command.Command;
+import com.bank.web.command.MoveCommand;
+import com.bank.web.command.Order;
+import com.bank.web.command.Receiver;
 import com.bank.web.domains.CustomerBean;
-import com.bank.web.pool.Constants;
 import com.bank.web.serviceImpls.UserServiceImpl;
 import com.bank.web.services.UserService;
 
-@WebServlet("/member.do")
+import lombok.Data;
+
+@WebServlet("/customer.do")
 public class UserController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -23,22 +28,22 @@ public class UserController extends HttpServlet {
 		UserService service;
 		CustomerBean customInfo;
 		CustomerBean customList;
-
+		Order order;
+		MoveCommand	cmd = null;
+		
 		String id = request.getParameter("id");
 		String pass = request.getParameter("pass");
 		String ssn = request.getParameter("ssn");
 		String name = request.getParameter("name");
 		String credit = request.getParameter("credit");
+		
+	      Receiver.init(request);
+	      Receiver.cmd.excute();
+	      if(Receiver.cmd.getAction()==null)  {
+	          Receiver.cmd.setPage();
+	      }
 
-		String nextLocation = "";
-
-		switch(request.getParameter("action")) {
-		case "move":
-
-			nextLocation = request.getParameter("dest");
-
-			break;
-
+		switch(Receiver.cmd.getAction()) {
 		case "join":
 
 			customInfo = new  CustomerBean();
@@ -51,9 +56,8 @@ public class UserController extends HttpServlet {
 			System.out.println("회원정보:  "+customInfo.toString());
 			service = new UserServiceImpl();
 			service.join(customInfo);
-
-			nextLocation = request.getParameter("dest");
-
+			
+            Receiver.cmd.setPage("login");
 			break;
 
 		case "login":
@@ -66,19 +70,20 @@ public class UserController extends HttpServlet {
 			customList = new  CustomerBean();
 			customList = service.login(customInfo);
 
-			if (!(customList.getId()==null)) {
-				request.setAttribute("customer", customList );
-				nextLocation = request.getParameter("dest");
+			if (customList.getId()==null) {
+                Receiver.cmd.setPage("login");
+      	      System.out.println(Receiver.cmd.getAction()+"ddddddddddd");
 			}else {
-				nextLocation = request.getParameter("action");
-			}
+			      System.out.println(Receiver.cmd.getAction()+"asdfasdf");
+				request.setAttribute("customer", customList );
+				Receiver.cmd.setPage("mypage");
+			}               
 			break;
+        case "existId":
+            break;
 		}
 
-		request.getRequestDispatcher(String.format
-				(Constants.VIEW_PATH,"customer",nextLocation))
-		.forward(request, response);
-
+	      Sender.forward(request,  response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
