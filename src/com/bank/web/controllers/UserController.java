@@ -37,8 +37,11 @@ public class UserController extends HttpServlet {
 		String name = request.getParameter("name");
 		String credit = request.getParameter("credit");
 		
+		System.out.println("1-1");
 	      Receiver.init(request);
+	      System.out.println("2-1");
 	      Receiver.cmd.excute();
+	      System.out.println("Receiver.cmd.excute()  END");
 	      if(Receiver.cmd.getAction()==null)  {
 	          Receiver.cmd.setPage();
 	      }
@@ -72,7 +75,7 @@ public class UserController extends HttpServlet {
 
 			if (customList.getId()==null) {
                 Receiver.cmd.setPage("login");
-      	      System.out.println(Receiver.cmd.getAction()+"ddddddddddd");
+      	      System.out.println(Receiver.cmd.getPage()+"UserController/login/Receiver.cmd.getPage()");
 			}else {
 			      System.out.println(Receiver.cmd.getAction()+"asdfasdf");
 				request.setAttribute("customer", customList );

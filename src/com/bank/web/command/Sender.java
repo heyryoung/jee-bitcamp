@@ -9,9 +9,9 @@ import javax.servlet.http.HttpServletResponse;
 public class Sender {
 	public static void forward(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		System.out.println(Receiver.cmd.getView()+"Receiver.cmd.getView()"); 
         request.getRequestDispatcher(Receiver.cmd.getView())
         .forward(request,  response);
-		
 	} 
 	
 }

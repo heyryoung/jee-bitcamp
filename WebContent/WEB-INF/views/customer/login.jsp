@@ -32,8 +32,6 @@
 </form>
 <script>
 	$("#login").submit(function(){
-		 location.assign('<%=request.getContextPath()%>/customer.do?action=move&dest=login');
-		alert("login");
 	});	
 	
 </script>

@@ -46,17 +46,19 @@ public class UserDAOImpl implements UserDAO{
 	    //모든 고객의 데이터를 리턴
 	    public CustomerBean[] login(UserBean param)  {
 	    	
-	    		CustomerBean[] params = new CustomerBean[30];
-	    		File file = new File(Constants.FILE_PATH+"customers190905.txt");
+	    		CustomerBean[] params = new CustomerBean[100];
+	    		CustomerBean[] resultCbs;
+	    		int cnt =0;
 	    		
+	    		File file = new File(Constants.FILE_PATH+"customers190905.txt");
 	    		try {
 	    			if (file.exists()) {
 		    			
 		    			BufferedReader br = new BufferedReader(new FileReader(file));
 		    			String line="";
 		    			String[] temp = new String[5];
-		    			int cnt =0;
-		    			
+
+
 			    			while ((line = br.readLine()) !=null) {
 			    				temp = line.split(",");
 			    	    		CustomerBean cbTemp = new CustomerBean();
@@ -65,7 +67,6 @@ public class UserDAOImpl implements UserDAO{
 			    	    		cbTemp.setSsn(temp[2]);
 			    	    		cbTemp.setName(temp[3]);
 			    	    		cbTemp.setCredit(temp[4]);
-				    				
 			    	    		params[cnt] = cbTemp;
 				    				cnt++;
 			    			}
@@ -75,7 +76,13 @@ public class UserDAOImpl implements UserDAO{
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-	    		return params;
+	    		
+	    		resultCbs = new CustomerBean[cnt];
+	    		for (int i = 0; i < cnt; i++) {
+					resultCbs[i] = params[i];
+				}
+
+	    		return resultCbs;
 	    	}
 	    	
 	    

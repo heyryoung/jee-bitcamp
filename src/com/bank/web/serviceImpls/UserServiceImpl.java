@@ -29,10 +29,10 @@ public class UserServiceImpl implements UserService{
 	// Dao에서 모든 고객 리스트를 불러와 서비스에서 로그인 처리
 	@Override
 	public CustomerBean login(UserBean param){
-		CustomerBean[] cb = new CustomerBean[10];
 		CustomerBean resultCb = new CustomerBean();
-		cb = dao.login(param);
+		CustomerBean[] cb = dao.login(param);
 
+		System.out.println(cb[cb.length-1].toString()+"cb");
 		for (int i = 0; i < cb.length; i++) {
 
 			if (param.getId().equals(cb[i].getId()) && param.getPass().equals(cb[i].getPass())) {
