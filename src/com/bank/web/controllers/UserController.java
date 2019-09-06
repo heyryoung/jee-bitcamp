@@ -21,21 +21,17 @@ public class UserController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		
-			CustomerBean c;
 			UserService service;
-			CustomerBean cd;
-			
-			String action =  request.getParameter("action");
-			String dest =  request.getParameter("dest");
+			CustomerBean customInfo;
+			CustomerBean customList;
 			
 			String id = request.getParameter("id");
 			String pass = request.getParameter("pass");
 			String ssn = request.getParameter("ssn");
 			String name = request.getParameter("name");
 			String credit = request.getParameter("credit");
-
 			
-			switch(action) {
+			switch(request.getParameter("action")) {
 			case "move":
 				
 				request.getRequestDispatcher(String.format
@@ -45,16 +41,16 @@ public class UserController extends HttpServlet {
 	
 			case "join":
 
-				c = new  CustomerBean();
-				c.setId(id);
-				c.setCredit(credit);
-				c.setName(name);
-				c.setPass(pass);
-				c.setSsn(ssn);
+				customInfo = new  CustomerBean();
+				customInfo.setId(id);
+				customInfo.setCredit(credit);
+				customInfo.setName(name);
+				customInfo.setPass(pass);
+				customInfo.setSsn(ssn);
 				
-				System.out.println("회원정보:  "+c.toString());
+				System.out.println("회원정보:  "+customInfo.toString());
 				service = new UserServiceImpl();
-				service.join(c);
+				service.join(customInfo);
 				
 				request.getRequestDispatcher(String.format
 						(Constants.VIEW_PATH,"customer",request.getParameter("dest"))).forward(request, response);
@@ -63,16 +59,16 @@ public class UserController extends HttpServlet {
 				
 			case "login":
 
-				c = new  CustomerBean();
-				c.setId(id);
-				c.setPass(pass);
+				customInfo = new  CustomerBean();
+				customInfo.setId(id);
+				customInfo.setPass(pass);
 				
 				service = new UserServiceImpl();
-				cd = new  CustomerBean();
-				cd = service.login(c);
+				customList = new  CustomerBean();
+				customList = service.login(customInfo);
 	
-				if (!(cd.getId()==null)) {
-					request.setAttribute("customer", cd );
+				if (!(customList.getId()==null)) {
+					request.setAttribute("customer", customList );
 					request.getRequestDispatcher(String.format
 							(Constants.VIEW_PATH,"customer",request.getParameter("dest"))).forward(request, response);
 					
