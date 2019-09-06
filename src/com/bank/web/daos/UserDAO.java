@@ -1,23 +1,20 @@
 package com.bank.web.daos;
 
-import java.io.IOException;
-import java.util.ArrayList;
-
 import com.bank.web.domains.AdminBean;
 import com.bank.web.domains.CustomerBean;
 import com.bank.web.domains.UserBean;
 
 public interface UserDAO {
 
-	void insertCustomer(CustomerBean param);
+	public void insertCustomer(CustomerBean param);
 
-	void insertEmployee(AdminBean param);
+	public void insertEmployee(AdminBean param);
 
-	boolean existCustomer(CustomerBean param);
+	public boolean existCustomer(CustomerBean param);
 
-	CustomerBean[] login(UserBean param)   ;
+	public CustomerBean[] login(UserBean param)  ;
 
-	CustomerBean originLogin(UserBean param);
+	public CustomerBean originLogin(UserBean param);
 	
 	
 	

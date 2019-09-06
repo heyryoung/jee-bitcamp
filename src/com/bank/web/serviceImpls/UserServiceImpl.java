@@ -13,17 +13,17 @@ public class UserServiceImpl implements UserService{
 	private List<CustomerBean> cstLit;
 	private List<AdminBean> adminList;
 	private UserDAO dao;
-	
+
 	public UserServiceImpl() {
 		cstLit = new ArrayList<>();
 		adminList = new ArrayList<>();
 		dao = new UserDAOImpl();
 	}
-	
+
 	@Override
 	public void join(CustomerBean param) {
 
-			dao.insertCustomer(param);
+		dao.insertCustomer(param);
 	}
 
 	// Dao에서 모든 고객 리스트를 불러와 서비스에서 로그인 처리
@@ -32,9 +32,9 @@ public class UserServiceImpl implements UserService{
 		CustomerBean[] cb = new CustomerBean[30];
 		CustomerBean resultCb = new CustomerBean();
 		cb = dao.login(param);
-		
+
 		for (int i = 0; i < cb.length; i++) {
-			
+
 			if (param.getId().equals(cb[i].getId()) && param.getPass().equals(cb[i].getPass())) {
 				resultCb.setId(cb[i].getId());
 				resultCb.setName(cb[i].getName());
@@ -42,63 +42,63 @@ public class UserServiceImpl implements UserService{
 				resultCb.setSsn(cb[i].getSsn());
 				resultCb.setCredit(cb[i].getCredit());
 				break;
-				
+
 			}
 		}
-		
+
 		return resultCb;
 	}
-	
-	
+
+
 	//Dao에서 로그인처리 된 고객 한명의 데이터를 받아 컨트롤러로 리턴
 	@Override
 	public CustomerBean originLogin(UserBean param){
 		CustomerBean resultCb = new CustomerBean();
 		resultCb = dao.originLogin(param);
-		
+
 		return resultCb;
 	}
 
-	
-	
-	
-	
-	
+
+
+
+
+
 	@Override
 	public void register(UserBean param) {
 		adminList.add((AdminBean)param);
-		
+
 	}
 
 	@Override
 	public List<CustomerBean> findAllCustomers() {
 
-		
+
 		return cstLit;
 	}
 
 	@Override
 	public List<AdminBean> findAllEmployees() {
-		
+
 		return adminList;
 	}
 
 	@Override
 	public List<UserBean> findByName(String name) {
 		List<UserBean> ub = new ArrayList<>();
-		
+
 		for (CustomerBean csb : cstLit) {
 			if (name.equals(csb.getName())) {
 				ub.add(csb);
 			}
 		}
-		
+
 		for (AdminBean adminBean : adminList) {
 			if (name.equals(adminBean.getName())) {
 				ub.add(adminBean);
 			}
 		}
-		
+
 		return ub;
 	}
 
@@ -117,7 +117,7 @@ public class UserServiceImpl implements UserService{
 				break;
 			}
 		}
-		
+
 		return ub;
 	}
 
@@ -146,7 +146,7 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public boolean existId(String id) {
-		
+
 		return (findById(id).equals(null)) ? false : true;
 	}
 
@@ -168,16 +168,16 @@ public class UserServiceImpl implements UserService{
 				break;
 			}
 		}
-		
+
 	}
 
 	@Override
 	public boolean deleteMember(UserBean param) {
 
 		UserBean u = findById(param.getId());
-		
+
 		return cstLit.contains(u) ?  cstLit.remove(u) : adminList.remove(u);
-		
+
 	}
 
 

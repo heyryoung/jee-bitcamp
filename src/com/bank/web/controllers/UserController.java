@@ -35,7 +35,8 @@ public class UserController extends HttpServlet {
 			case "move":
 				
 				request.getRequestDispatcher(String.format
-						(Constants.VIEW_PATH,"customer",request.getParameter("dest"))).forward(request, response);
+						(Constants.VIEW_PATH,"customer",request.getParameter("dest")))
+						.forward(request, response);
 				
 				break;
 	
@@ -53,7 +54,8 @@ public class UserController extends HttpServlet {
 				service.join(customInfo);
 				
 				request.getRequestDispatcher(String.format
-						(Constants.VIEW_PATH,"customer",request.getParameter("dest"))).forward(request, response);
+						(Constants.VIEW_PATH,"customer",request.getParameter("dest")))
+						.forward(request, response);
 				
 				break;
 				
@@ -70,12 +72,14 @@ public class UserController extends HttpServlet {
 				if (!(customList.getId()==null)) {
 					request.setAttribute("customer", customList );
 					request.getRequestDispatcher(String.format
-							(Constants.VIEW_PATH,"customer",request.getParameter("dest"))).forward(request, response);
+							(Constants.VIEW_PATH,"customer",request.getParameter("dest")))
+							.forward(request, response);
 					
 					
 				}else {
 					request.getRequestDispatcher(String.format
-							(Constants.VIEW_PATH,"customer",request.getParameter("action"))).forward(request, response);
+							(Constants.VIEW_PATH,"customer",request.getParameter("action")))
+							.forward(request, response);
 				}
 				break;
 			}
