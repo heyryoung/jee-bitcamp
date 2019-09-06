@@ -21,6 +21,7 @@ public interface UserService {
 	
 	
 	public CustomerBean login(UserBean param) throws IOException;
+	public CustomerBean originLogin(UserBean param);
 	
 	
 }

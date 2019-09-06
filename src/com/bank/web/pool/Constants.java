@@ -14,5 +14,6 @@ public class Constants {
 	          File.separator,
 	          File.separator);
 	   
-	   public static final String  VIEW_PATH =  "/%s.jsp";
+	/* public static final String VIEW_PATH = "/%s.jsp"; */
+	   public static final String VIEW_PATH =  "WEB-INF/views/%s/%s.jsp";
 	}

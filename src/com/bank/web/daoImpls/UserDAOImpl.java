@@ -42,36 +42,33 @@ public class UserDAOImpl implements UserDAO{
 			return result;
 	    }
 	    
-	    public CustomerBean login(UserBean param)  {
+	    
+	    //모든 고객의 데이터를 리턴
+	    public CustomerBean[] login(UserBean param)  {
 	    	
-	    	CustomerBean params = new CustomerBean();
-	    		String str = "";
+	    		CustomerBean[] params = new CustomerBean[30];
 	    		File file = new File(Constants.FILE_PATH+"customers190905.txt");
 	    		
-	    		String id = param.getId();
-	    		String pass = param.getPass();
 	    		try {
 	    			if (file.exists()) {
 		    			
-		    			FileReader in = new FileReader(file);
-		    			BufferedReader br = new BufferedReader(in);
+		    			BufferedReader br = new BufferedReader(new FileReader(file));
 		    			String line="";
 		    			String[] temp = new String[5];
+		    			int cnt =0;
 		    			
-		    				int i =0;
 			    			while ((line = br.readLine()) !=null) {
 			    				temp = line.split(",");
-			    				
-			    				if (param.getId().equals(temp[0])&&param.getPass().equals(temp[1])) {
-				    				params.setId(temp[0]);
-				    				params.setPass(temp[1]);
-				    				params.setSsn(temp[2]);
-				    				params.setName(temp[3]);
-				    				params.setCredit(temp[4]);
-								}
-			    
+			    	    		CustomerBean cbTemp = new CustomerBean();
+			    	    		cbTemp.setId(temp[0]);
+			    	    		cbTemp.setPass(temp[1]);
+			    	    		cbTemp.setSsn(temp[2]);
+			    	    		cbTemp.setName(temp[3]);
+			    	    		cbTemp.setCredit(temp[4]);
+				    				
+			    	    		params[cnt] = cbTemp;
+				    				cnt++;
 			    			}
-		    			
 
 		    			br.close();
 		    		}
@@ -82,5 +79,43 @@ public class UserDAOImpl implements UserDAO{
 	    		return params;
 	    	}
 	    	
+	    
+	    // 아이디와 비밀번호가 일치하는 고객의 데이터만 리턴
+	    public CustomerBean originLogin(UserBean param)  {
+	    	
+    		File file = new File(Constants.FILE_PATH+"customers190905.txt");
+    		CustomerBean resultCb = new CustomerBean();
+    		
+    		try {
+    			if (file.exists()) {
+	    			
+	    			BufferedReader br = new BufferedReader(new FileReader(file));
+	    			String line="";
+	    			String[] temp = new String[5];
+	    			int cnt =0;
+	    			
+		    			while ((line = br.readLine()) !=null) {
+		    				temp = line.split(",");
+		    				if (param.getId().equals(temp[0]) && param.getPass().equals(temp[1])) {
+		    					resultCb.setId(temp[0]);
+		    					resultCb.setPass(temp[1]);
+		    					resultCb.setSsn(temp[2]);
+		    					resultCb.setName(temp[3]);
+		    					resultCb.setCredit(temp[4]);
+		    					break;
+							}
+
+		    			}
+
+	    			br.close();
+	    		}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+    		
+    		return resultCb;
+    	}
+	    
+	    
 
 }

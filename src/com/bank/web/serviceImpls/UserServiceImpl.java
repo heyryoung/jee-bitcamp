@@ -1,6 +1,5 @@
 package com.bank.web.serviceImpls;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +26,44 @@ public class UserServiceImpl implements UserService{
 			dao.insertCustomer(param);
 	}
 
+	// Dao에서 모든 고객 리스트를 불러와 서비스에서 로그인 처리
+	@Override
+	public CustomerBean login(UserBean param){
+		CustomerBean[] cb = new CustomerBean[30];
+		CustomerBean resultCb = new CustomerBean();
+		cb = dao.login(param);
+		
+		for (int i = 0; i < cb.length; i++) {
+			
+			if (param.getId().equals(cb[i].getId()) && param.getPass().equals(cb[i].getPass())) {
+				resultCb.setId(cb[i].getId());
+				resultCb.setName(cb[i].getName());
+				resultCb.setPass(cb[i].getPass());
+				resultCb.setSsn(cb[i].getSsn());
+				resultCb.setCredit(cb[i].getCredit());
+				break;
+				
+			}
+		}
+		
+		return resultCb;
+	}
+	
+	
+	//Dao에서 로그인처리 된 고객 한명의 데이터를 받아 컨트롤러로 리턴
+	@Override
+	public CustomerBean originLogin(UserBean param){
+		CustomerBean resultCb = new CustomerBean();
+		resultCb = dao.originLogin(param);
+		
+		return resultCb;
+	}
+
+	
+	
+	
+	
+	
 	@Override
 	public void register(UserBean param) {
 		adminList.add((AdminBean)param);
@@ -143,12 +180,5 @@ public class UserServiceImpl implements UserService{
 		
 	}
 
-	@Override
-	public CustomerBean login(UserBean param){
-		CustomerBean cb = new CustomerBean();
-		cb = dao.login(param);
-		
-		return cb;
-	}
 
 }

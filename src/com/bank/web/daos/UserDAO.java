@@ -15,7 +15,9 @@ public interface UserDAO {
 
 	boolean existCustomer(CustomerBean param);
 
-	CustomerBean login(UserBean param) ;
+	CustomerBean[] login(UserBean param)   ;
+
+	CustomerBean originLogin(UserBean param);
 	
 	
 	
