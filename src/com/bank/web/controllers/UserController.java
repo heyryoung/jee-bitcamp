@@ -20,69 +20,65 @@ public class UserController extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		
-			UserService service;
-			CustomerBean customInfo;
-			CustomerBean customList;
-			
-			String id = request.getParameter("id");
-			String pass = request.getParameter("pass");
-			String ssn = request.getParameter("ssn");
-			String name = request.getParameter("name");
-			String credit = request.getParameter("credit");
-			
-			switch(request.getParameter("action")) {
-			case "move":
-				
-				request.getRequestDispatcher(String.format
-						(Constants.VIEW_PATH,"customer",request.getParameter("dest")))
-						.forward(request, response);
-				
-				break;
-	
-			case "join":
+		UserService service;
+		CustomerBean customInfo;
+		CustomerBean customList;
 
-				customInfo = new  CustomerBean();
-				customInfo.setId(id);
-				customInfo.setCredit(credit);
-				customInfo.setName(name);
-				customInfo.setPass(pass);
-				customInfo.setSsn(ssn);
-				
-				System.out.println("회원정보:  "+customInfo.toString());
-				service = new UserServiceImpl();
-				service.join(customInfo);
-				
-				request.getRequestDispatcher(String.format
-						(Constants.VIEW_PATH,"customer",request.getParameter("dest")))
-						.forward(request, response);
-				
-				break;
-				
-			case "login":
+		String id = request.getParameter("id");
+		String pass = request.getParameter("pass");
+		String ssn = request.getParameter("ssn");
+		String name = request.getParameter("name");
+		String credit = request.getParameter("credit");
 
-				customInfo = new  CustomerBean();
-				customInfo.setId(id);
-				customInfo.setPass(pass);
-				
-				service = new UserServiceImpl();
-				customList = new  CustomerBean();
-				customList = service.login(customInfo);
-	
-				if (!(customList.getId()==null)) {
-					request.setAttribute("customer", customList );
-					request.getRequestDispatcher(String.format
-							(Constants.VIEW_PATH,"customer",request.getParameter("dest")))
-							.forward(request, response);
-					
-					
-				}else {
-					request.getRequestDispatcher(String.format
-							(Constants.VIEW_PATH,"customer",request.getParameter("action")))
-							.forward(request, response);
-				}
-				break;
+		String nextLocation = "";
+
+		switch(request.getParameter("action")) {
+		case "move":
+
+			nextLocation = request.getParameter("dest");
+
+			break;
+
+		case "join":
+
+			customInfo = new  CustomerBean();
+			customInfo.setId(id);
+			customInfo.setCredit(credit);
+			customInfo.setName(name);
+			customInfo.setPass(pass);
+			customInfo.setSsn(ssn);
+
+			System.out.println("회원정보:  "+customInfo.toString());
+			service = new UserServiceImpl();
+			service.join(customInfo);
+
+			nextLocation = request.getParameter("dest");
+
+			break;
+
+		case "login":
+
+			customInfo = new  CustomerBean();
+			customInfo.setId(id);
+			customInfo.setPass(pass);
+
+			service = new UserServiceImpl();
+			customList = new  CustomerBean();
+			customList = service.login(customInfo);
+
+			if (!(customList.getId()==null)) {
+				request.setAttribute("customer", customList );
+				nextLocation = request.getParameter("dest");
+			}else {
+				nextLocation = request.getParameter("action");
 			}
+			break;
+		}
+
+		request.getRequestDispatcher(String.format
+				(Constants.VIEW_PATH,"customer",nextLocation))
+		.forward(request, response);
+
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
